@@ -1,10 +1,7 @@
-exports.createArticLookup = insertedArticlesData => {
-  //console.log(insertedArticlesData[0]);
-  return insertedArticlesData.reduce(
-    (articleRefObj, eachArticle) => ({
-      ...articleRefObj,
-      [eachArticle.title]: eachArticle.article_id
-    }),
-    {}
-  );
-};
+exports.createArticLookup = insertedArticlesData => insertedArticlesData.reduce(
+  (articleRefObj, eachArticle) => ({
+    ...articleRefObj,
+    [eachArticle.title]: eachArticle.article_id,
+  }),
+  {},
+);

@@ -1,7 +1,7 @@
 const {
   topicData, userData, articleData, commentData,
 } = require('../data');
-const { createArticLookup } = require('../utiles/index');
+const { createArticLookup } = require('../../utiles/index');
 
 exports.seed = function (knex, Promise) {
   return knex.migrate

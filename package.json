@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha spec/utils.spec.js",
+    "app-test": "mocha spec/app.spec.js",
     "lint": "eslint ./ --fix",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
@@ -26,11 +27,14 @@
   },
   "homepage": "https://github.com/northcoders/BE2-NC-Knews#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "chai": "^4.2.0",
+    "express": "^4.16.4",
     "knex": "^0.15.2",
     "mocha": "^5.2.0",
     "pg": "^7.8.0",
-    "pg-promise": "^8.5.5"
+    "pg-promise": "^8.5.5",
+    "supertest": "^3.4.2"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
