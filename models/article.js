@@ -6,7 +6,8 @@ exports.getarticlesData = ({ author, topic, sort_by, order }) => {
     .select("articles.*")
     .from("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
-    .count("comments.article_id")
+    .count("comments.article_id as comment_count")
+    //
     .groupBy(
       "articles.author",
       "articles.body",
@@ -35,4 +36,22 @@ exports.insertArticleData = newArticleData => {
     .insert(newArticleData)
     .into("articles")
     .returning("*");
+};
+
+exports.getArticleByID = ({ article_id }) => {
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .count("comments.article_id as comment_count")
+    .where("articles.article_id", article_id)
+    .groupBy(
+      "articles.author",
+      "articles.body",
+      "articles.title",
+      "articles.article_id",
+      "articles.votes",
+      "articles.created_at",
+      "articles.topic"
+    );
 };

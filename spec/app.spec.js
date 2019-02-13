@@ -36,7 +36,7 @@ describe("/api", () => {
         .expect(201)
         .send(newTopicData)
         .then(res => {
-          //console.log(res.body);
+          console.log(res.body);
           expect(res.body.newTopicData[0]).to.be.an("object");
           expect(res.body.newTopicData[0].slug).to.eql("shiva");
         });
@@ -51,7 +51,8 @@ describe("/api", () => {
         .then(res => {
           //console.log(res.body.articles[0].count);
           expect(res.body.articles).to.be.an("array");
-          expect(res.body.articles[0].count).to.eql("13");
+          expect(res.body.articles[0].comment_count).to.eql("13");
+          expect(res.body.articles[0]).contain.key("comment_count");
         });
     });
     it("GET: status 200 and response with and array of article object with specific author", () => {
@@ -96,9 +97,9 @@ describe("/api", () => {
         .expect(201)
         .send(newArticleData)
         .then(res => {
-          console.log(res.body);
-          expect(res.body.newInsertedArticleData[0]).to.be.an("object");
-          expect(res.body.newInsertedArticleData[0]).contain.keys(
+          //console.log(res.body);
+          expect(res.body.newInsertedArticleData).to.be.an("object");
+          expect(res.body.newInsertedArticleData).contain.keys(
             "article_id",
             "title",
             "body",
@@ -107,6 +108,17 @@ describe("/api", () => {
             "author",
             "created_at"
           );
+        });
+    });
+    it("GET: status 200 and response with and single article object by specific ID ", () => {
+      return request
+        .get("/api/articles/2")
+        .expect(200)
+        .then(res => {
+          //console.log(res.body.articles);
+          expect(res.body.article).to.be.an("object");
+          expect(res.body.article.title).to.eql("Sony Vaio; or, The Laptop");
+          expect(res.body.article).contain.key("comment_count");
         });
     });
   });
