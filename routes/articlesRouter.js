@@ -1,6 +1,9 @@
 const articlesRouter = require("express").Router();
-const { sendArticlesData } = require("../controllers/article");
+const { sendArticlesData, postArticleData } = require("../controllers/article");
 
-articlesRouter.route("/").get(sendArticlesData);
+articlesRouter
+  .route("/")
+  .get(sendArticlesData)
+  .post(postArticleData);
 
 module.exports = articlesRouter;

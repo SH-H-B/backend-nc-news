@@ -38,7 +38,7 @@ describe("/api", () => {
         .then(res => {
           //console.log(res.body);
           expect(res.body.newTopicData[0]).to.be.an("object");
-          expect(res.body.newTopicData[0]).contain.keys("slug", "description");
+          expect(res.body.newTopicData[0].slug).to.eql("shiva");
         });
     });
   });
@@ -51,7 +51,7 @@ describe("/api", () => {
         .then(res => {
           //console.log(res.body.articles[0].count);
           expect(res.body.articles).to.be.an("array");
-          expect(res.body.articles[0].count).to.eql("0");
+          expect(res.body.articles[0].count).to.eql("13");
         });
     });
     it("GET: status 200 and response with and array of article object with specific author", () => {
@@ -62,6 +62,51 @@ describe("/api", () => {
           //console.log(res.body.articles[0].count);
           expect(res.body.articles).to.be.an("array");
           expect(res.body.articles[0].author).to.eql("rogersop");
+        });
+    });
+    it("GET: status 200 and response with and array of article object with specific topic", () => {
+      return request
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(res => {
+          //console.log(res.body.articles);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles[3].topic).to.eql("mitch");
+        });
+    });
+    it("GET: status 200 and response with and array of custom sorted article object ", () => {
+      return request
+        .get("/api/articles?sort_by=topic&order=asc")
+        .expect(200)
+        .then(res => {
+          //console.log(res.body.articles);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles[0].topic).to.eql("cats");
+        });
+    });
+    it("POST, status:201 and response with posted article object", () => {
+      const newArticleData = {
+        title: "test",
+        body: "hellooooo and how are youoooooooooo",
+        topic: "cats",
+        author: "rogersop"
+      };
+      return request
+        .post("/api/articles")
+        .expect(201)
+        .send(newArticleData)
+        .then(res => {
+          console.log(res.body);
+          expect(res.body.newInsertedArticleData[0]).to.be.an("object");
+          expect(res.body.newInsertedArticleData[0]).contain.keys(
+            "article_id",
+            "title",
+            "body",
+            "votes",
+            "topic",
+            "author",
+            "created_at"
+          );
         });
     });
   });

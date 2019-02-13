@@ -1,6 +1,6 @@
 const connection = require("../db/connection");
 
-exports.getarticlesData = author => {
+exports.getarticlesData = ({ author, topic, sort_by, order }) => {
   //console.log(author);
   let query = connection
     .select("articles.*")
@@ -16,10 +16,23 @@ exports.getarticlesData = author => {
       "articles.created_at",
       "articles.topic"
     );
-  if (author !== undefined && author !== "") {
+  if (author !== undefined) {
     query.where("articles.author", author);
   }
+  if (topic !== undefined) {
+    query.where("articles.topic", topic);
+  }
+
+  if (sort_by === undefined && order === undefined) {
+    query.orderBy("articles.created_at", "desc");
+  } else query.orderBy(sort_by, order);
 
   return query;
 };
-//
+
+exports.insertArticleData = newArticleData => {
+  return connection
+    .insert(newArticleData)
+    .into("articles")
+    .returning("*");
+};
