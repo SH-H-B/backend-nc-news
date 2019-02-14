@@ -104,3 +104,12 @@ exports.getArticlesComments = ({ article_id, sort_by, order }) => {
   } else query.orderBy(sort_by, order);
   return query;
 };
+
+exports.insertCommentsByArticleID = ({ article_id }, newCommentData) => {
+  console.log(newCommentData);
+  return connection
+    .insert(newCommentData)
+    .where("comments.article_id", article_id)
+    .into("comments")
+    .returning("*");
+};

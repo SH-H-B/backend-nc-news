@@ -4,7 +4,8 @@ const {
   getArticleByID,
   updateArticleVotes,
   removeArticleByID,
-  getArticlesComments
+  getArticlesComments,
+  insertCommentsByArticleID
 } = require("../models/article");
 
 exports.sendArticlesData = (req, res, next) => {
@@ -19,7 +20,7 @@ exports.sendArticlesData = (req, res, next) => {
 exports.postArticleData = (req, res, next) => {
   insertArticleData(req.body)
     .then(([newInsertedArticleData]) => {
-      ///ask this[]
+      ///ask this[]<---- it s because we have a single object.
       res.status(201).send({ newInsertedArticleData });
     })
     .catch(console.log);
@@ -58,6 +59,16 @@ exports.sendArticlesComments = (req, res, next) => {
     .then(comments => {
       //console.log(comments);
       res.status(200).send({ comments });
+    })
+    .catch(console.log);
+};
+
+exports.postCommentByarticleID = (req, res, next) => {
+  //console.log(req.body);
+  insertCommentsByArticleID(req.params, req.body)
+    .then(([newInsertedComment]) => {
+      //console.log(newInsertedComment);
+      res.status(201).send({ newInsertedComment });
     })
     .catch(console.log);
 };

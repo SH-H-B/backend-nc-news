@@ -148,24 +148,29 @@ describe("/api", () => {
         .get("/api/articles/6/comments")
         .expect(200)
         .then(res => {
-          console.log(res.body.comments);
+          //console.log(res.body.comments);
           expect(res.body.comments).to.be.an("array");
           expect(res.body.comments[0].body).to.equal(
             "This is a bad article name"
           );
         });
     });
-    // it("GET: status 200 and response with array of comments object for the given `article_id`", () => {
-    //   return request
-    //     .get("/api/articles/6/comments")
-    //     .expect(200)
-    //     .then(res => {
-    //       //console.log(res.body.comments);
-    //       expect(res.body.comments).to.be.an("array");
-    //       expect(res.body.comments[0].body).to.equal(
-    //         "This is a bad article name"
-    //       );
-    //     });
-    // });
+    it("POST, status:201 and response with single posted comment object", () => {
+      const newCommentData = {
+        author: "rogersop",
+        body: "I am so proud of my codes"
+      };
+      return request
+        .post("/api/articles/6/comments")
+        .expect(201)
+        .send(newCommentData)
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.newInsertedComment).to.be.an("object");
+          expect(res.body.newInsertedComment.body).to.equal(
+            "I am so proud of my codes"
+          );
+        });
+    });
   });
 });
