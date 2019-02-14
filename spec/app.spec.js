@@ -6,6 +6,7 @@ const { expect } = require("chai");
 const connection = require("../db/connection");
 
 describe("/api", () => {
+  console.log("ok");
   beforeEach(() =>
     connection.migrate
       .rollback()
@@ -16,7 +17,7 @@ describe("/api", () => {
   after(() => connection.destroy());
 
   describe("/topics", () => {
-    it("GETS: status:200 and responds with an array of topics object", () =>
+    it("GETS: status:200 and responds with an array of topics objects", () =>
       request
         .get("/api/topics")
         .expect(200)
@@ -194,6 +195,47 @@ describe("/api", () => {
         .expect(204)
         .then(res => {
           expect(res.body).to.eql({});
+        });
+    });
+  });
+  describe("/users", () => {
+    it("GETS: status:200 and responds with an array of users objects", () => {
+      return request
+        .get("/api/users")
+        .expect(200)
+        .then(res => {
+          expect(res.body.users).to.be.an("array");
+          expect(res.body.users[0]).contain.keys(
+            "username",
+            "avatar_url",
+            "name"
+          );
+        });
+    });
+    it("POST, status:201 and response with posted user object", () => {
+      const newUserData = {
+        username: "Ramtin",
+        name: "shiva",
+        avatar_url:
+          "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+      };
+      return request
+        .post("/api/users")
+        .expect(201)
+        .send(newUserData)
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.newUserData).to.be.an("object");
+          expect(res.body.newUserData.name).to.eql("shiva");
+        });
+    });
+    it("GET, status 200 and response with a  single user object ", () => {
+      return request
+        .get("/api/users/icellusedkars")
+        .expect(200)
+        .then(res => {
+          expect(res.body.user).to.be.an("object");
+          expect(res.body.user.name).to.eql("sam");
         });
     });
   });

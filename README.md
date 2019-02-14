@@ -324,8 +324,6 @@ GET /api/users
   - `avatar_url`
   - `name`
 
----inc_votesinc_votesinc_votesinc_votesinc_votesinc_votes
-
 ```http
 POST /api/users
 ```
