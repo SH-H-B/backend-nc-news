@@ -29,7 +29,9 @@ exports.postArticleData = (req, res, next) => {
 exports.sendArticleByID = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
-      res.status(200).send({ article });
+      if (!article)
+        return Promise.reject({ status: 404, msg: "Article not found" });
+      else return res.status(200).send({ article });
     })
     .catch(console.log);
 };

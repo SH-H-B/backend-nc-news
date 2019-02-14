@@ -106,7 +106,7 @@ exports.getArticlesComments = ({ article_id, sort_by, order }) => {
 };
 
 exports.insertCommentsByArticleID = ({ article_id }, newCommentData) => {
-  console.log(newCommentData);
+  //console.log(newCommentData);
   return connection
     .insert(newCommentData)
     .where("comments.article_id", article_id)

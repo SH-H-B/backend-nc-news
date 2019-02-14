@@ -170,6 +170,22 @@ describe("/api", () => {
           expect(res.body.newInsertedComment.body).to.equal(
             "I am so proud of my codes"
           );
+          expect(res.body.newInsertedComment).contain.keys("author", "body");
+        });
+    });
+  });
+  describe("/comments", () => {
+    it("patch: status:200 and response with updated single comments's votes object", () => {
+      const newVote = {
+        inc_votes: -1
+      };
+      return request
+        .patch("/api/comments/2")
+        .expect(200)
+        .send(newVote)
+        .then(res => {
+          expect(res.body.updatedComment).to.be.an("object");
+          expect(res.body.updatedComment.votes).to.eql(13);
         });
     });
   });
