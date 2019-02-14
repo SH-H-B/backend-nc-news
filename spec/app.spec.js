@@ -36,7 +36,7 @@ describe("/api", () => {
         .expect(201)
         .send(newTopicData)
         .then(res => {
-          console.log(res.body);
+          //console.log(res.body);
           expect(res.body.newTopicData[0]).to.be.an("object");
           expect(res.body.newTopicData[0].slug).to.eql("shiva");
         });
@@ -135,7 +135,7 @@ describe("/api", () => {
           expect(res.body.updatedArticle.votes).to.eql(99);
         });
     });
-    it("DELETE, status:204", () => {
+    it("DELETE, status:204 it  delete the given article by `article_id`", () => {
       return request
         .delete("/api/articles/1")
         .expect(204)
@@ -143,5 +143,29 @@ describe("/api", () => {
           expect(res.body).to.eql({});
         });
     });
+    it("GET: status 200 and response with array of comments object for the given `article_id`", () => {
+      return request
+        .get("/api/articles/6/comments")
+        .expect(200)
+        .then(res => {
+          console.log(res.body.comments);
+          expect(res.body.comments).to.be.an("array");
+          expect(res.body.comments[0].body).to.equal(
+            "This is a bad article name"
+          );
+        });
+    });
+    // it("GET: status 200 and response with array of comments object for the given `article_id`", () => {
+    //   return request
+    //     .get("/api/articles/6/comments")
+    //     .expect(200)
+    //     .then(res => {
+    //       //console.log(res.body.comments);
+    //       expect(res.body.comments).to.be.an("array");
+    //       expect(res.body.comments[0].body).to.equal(
+    //         "This is a bad article name"
+    //       );
+    //     });
+    // });
   });
 });

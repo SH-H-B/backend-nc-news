@@ -3,7 +3,8 @@ const {
   insertArticleData,
   getArticleByID,
   updateArticleVotes,
-  removeArticleByID
+  removeArticleByID,
+  getArticlesComments
 } = require("../models/article");
 
 exports.sendArticlesData = (req, res, next) => {
@@ -48,6 +49,15 @@ exports.deleteArticleByID = (req, res, next) => {
   removeArticleByID(req.params)
     .then(() => {
       res.status(204).send({});
+    })
+    .catch(console.log);
+};
+
+exports.sendArticlesComments = (req, res, next) => {
+  getArticlesComments(req.params)
+    .then(comments => {
+      //console.log(comments);
+      res.status(200).send({ comments });
     })
     .catch(console.log);
 };

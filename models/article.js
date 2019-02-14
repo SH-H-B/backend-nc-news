@@ -7,7 +7,6 @@ exports.getarticlesData = ({ author, topic, sort_by, order }) => {
     .from("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .count("comments.article_id as comment_count")
-    //
     .groupBy(
       "articles.author",
       "articles.body",
@@ -66,6 +65,7 @@ exports.updateArticleVotes = ({ article_id }, { newVote }) => {
     query.decrement("votes", newVote);
   }
   return query.returning("*");
+  articles;
 };
 
 exports.removeArticleByID = ({ article_id }) => {
@@ -80,4 +80,27 @@ exports.removeArticleByID = ({ article_id }) => {
         .del()
         .where("articles.article_id", "=", article_id);
     });
+};
+
+exports.getArticlesComments = ({ article_id, sort_by, order }) => {
+  let query = connection
+    // .from("comments")
+    // .select("comments.*")
+    // .leftJoin("articles", "comments.article_id", "articles.article_id")
+    // .where("comments.article_id", article_id)
+    // .groupBy(
+    //   "comments.comment_id",
+    //   "comments.votes",
+    //   "comments.created_at",
+    //   "comments.author",
+    //   "comments.body"
+    // )
+    // .returning("*");<--- this works but in comments table we have a column article_id so we can use comments table and no need for this
+    .from("comments")
+    .select("comment_id", "votes", "created_at", "author", "body")
+    .where("comments.article_id", article_id);
+  if (sort_by === undefined && order === undefined) {
+    query.orderBy("comments.created_at", "desc");
+  } else query.orderBy(sort_by, order);
+  return query;
 };
