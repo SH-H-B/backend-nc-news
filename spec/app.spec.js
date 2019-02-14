@@ -188,5 +188,13 @@ describe("/api", () => {
           expect(res.body.updatedComment.votes).to.eql(13);
         });
     });
+    it("DELETE, status:204 it  delete the given comment by `comment_id` with no content", () => {
+      return request
+        .delete("/api/comments/2")
+        .expect(204)
+        .then(res => {
+          expect(res.body).to.eql({});
+        });
+    });
   });
 });
