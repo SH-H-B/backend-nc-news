@@ -55,3 +55,29 @@ exports.getArticleByID = ({ article_id }) => {
       "articles.topic"
     );
 };
+
+exports.updateArticleVotes = ({ article_id }, { newVote }) => {
+  //console.log(article_id);
+
+  const query = connection.from("articles").where("article_id", article_id);
+
+  if (newVote > 0) query.increment("votes", newVote);
+  else {
+    query.decrement("votes", newVote);
+  }
+  return query.returning("*");
+};
+
+exports.removeArticleByID = ({ article_id }) => {
+  //first delete all relations then delete from actual table ( in this case articles)
+  return connection
+    .from("comments")
+    .where("comments.article_id", "=", article_id)
+    .del()
+    .then(() => {
+      return connection
+        .from("articles")
+        .del()
+        .where("articles.article_id", "=", article_id);
+    });
+};

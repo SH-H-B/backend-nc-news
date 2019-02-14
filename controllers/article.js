@@ -1,7 +1,9 @@
 const {
   getarticlesData,
   insertArticleData,
-  getArticleByID
+  getArticleByID,
+  updateArticleVotes,
+  removeArticleByID
 } = require("../models/article");
 
 exports.sendArticlesData = (req, res, next) => {
@@ -26,6 +28,26 @@ exports.sendArticleByID = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
       res.status(200).send({ article });
+    })
+    .catch(console.log);
+};
+
+exports.patchArticleVotes = (req, res, next) => {
+  //console.log(req.body);
+  updateArticleVotes(req.params, req.body)
+    .then(([updatedArticle]) => {
+      //console.log(updatedArticle);
+      res.status(200).send({
+        updatedArticle
+      });
+    })
+    .catch(console.log);
+};
+
+exports.deleteArticleByID = (req, res, next) => {
+  removeArticleByID(req.params)
+    .then(() => {
+      res.status(204).send({});
     })
     .catch(console.log);
 };

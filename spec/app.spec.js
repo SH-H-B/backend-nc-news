@@ -121,5 +121,27 @@ describe("/api", () => {
           expect(res.body.article).contain.key("comment_count");
         });
     });
+    it("PATCH, status:202 and response with updated single article's votes object", () => {
+      const newVote = {
+        inc_votes: -1
+      };
+      return request
+        .patch("/api/articles/1")
+        .expect(200)
+        .send(newVote)
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.updatedArticle).to.be.an("object");
+          expect(res.body.updatedArticle.votes).to.eql(99);
+        });
+    });
+    it("DELETE, status:204", () => {
+      return request
+        .delete("/api/articles/1")
+        .expect(204)
+        .then(res => {
+          expect(res.body).to.eql({});
+        });
+    });
   });
 });
