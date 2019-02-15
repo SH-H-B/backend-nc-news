@@ -13,7 +13,9 @@
     "migrate:make": "knex migrate:make",
     "migrate:latest": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
-    "seed:db": "knex seed:run"
+    "seed:db": "knex seed:run",
+    "dev": "nodemon listen.js",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "express": "^4.16.4",
     "knex": "^0.15.2",
     "mocha": "^5.2.0",
+    "nodemon": "^1.18.10",
     "pg": "^7.8.0",
     "pg-promise": "^8.5.5",
     "supertest": "^3.4.2"

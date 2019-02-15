@@ -5,7 +5,7 @@ exports.patchCommentVotes = (req, res, next) => {
     .then(([updatedComment]) => {
       res.status(200).send({ updatedComment });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.deleteCommentByID = (req, res, next) => {
@@ -13,5 +13,5 @@ exports.deleteCommentByID = (req, res, next) => {
     .then(() => {
       res.status(204).send({});
     })
-    .catch(console.log);
+    .catch(next);
 };

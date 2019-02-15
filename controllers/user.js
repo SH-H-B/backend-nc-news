@@ -10,7 +10,7 @@ exports.sendAllusers = (req, res, next) => {
       //console.log(users);
       res.status(200).send({ users });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.postUserData = (req, res, next) => {
@@ -18,14 +18,14 @@ exports.postUserData = (req, res, next) => {
     .then(([newUserData]) => {
       res.status(201).send({ newUserData });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.sendUserByUsername = (req, res, next) => {
   getUserByUsername(req.params)
     .then(([user]) => {
-      //console.log(user);
-      res.status(200).send({ user });
+      if (!user) return Promise.reject({ status: 404, msg: "user not found" });
+      else return res.status(200).send({ user });
     })
-    .catch(console.log);
+    .catch(next);
 };

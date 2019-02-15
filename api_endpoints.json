@@ -1,0 +1,43 @@
+{
+  "/api": {
+    "/topics": {
+      "GET": "status:200 and responds with an array of topics objects",
+      "POST": "status:201 and response with posted topic object"
+    },
+    "/articles": {
+      "/": {
+        "GET": " status 200 and response with and single article object by specific ID",
+        "POST": "status:201 and response with posted article object",
+        "QUERY": {
+          "?author=rogersop": "status 200 and response with and array of article object with specific author",
+          "?sort_by={columnName}": "200 status and returns array of all article objects sorted by a given column name. Sorted by 'created_at' column and descending order by default. (Constrained by limit default value)",
+          "?order={asc/desc}": "status 200 and response with and array of custom sorted article object",
+          "?topic=mitch": "status 200 and response with and array of article object with specific topic"
+        }
+      },
+      "/:article_id": {
+        "GET": "status 200 and response with and single article object by specific ID",
+        "PATCH": "status:202 and response with updated single article's votes object",
+        "DELETE": "status:204 it  delete the given article by `article_id`"
+      },
+      "/:article_id/comments": {
+        "GET": "status 200 and response with array of comments object for the given `article_id",
+        "POST": "status:201 and response with single posted comment object",
+        "QUERY": {
+          "?sort_by={columnName}": "200 status and returns array of all the comment objects for the specified article sorted by a given column name. Sorted by 'created_at' column and descending order by default",
+          "?order={asc/desc}": "200 status and returns an array of all the comment objects for the specified article sorted in either ascending or descending order (by default set to descending)"
+        }
+      }
+    },
+    "/comments": {
+      "/:comment_id": {
+        "PATCH": "status:200 and response with updated single comments's votes object",
+        "DELETE": "status:204 it  delete the given comment by `comment_id` with no content"
+      }
+    },
+    "/users": {
+      "GET": "status:200 and responds with an array of users objects",
+      "POST": "201 status and returns an object of the posted user"
+    }
+  }
+}

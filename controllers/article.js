@@ -44,7 +44,7 @@ exports.patchArticleVotes = (req, res, next) => {
         updatedArticle
       });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.deleteArticleByID = (req, res, next) => {
@@ -52,16 +52,17 @@ exports.deleteArticleByID = (req, res, next) => {
     .then(() => {
       res.status(204).send({});
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.sendArticlesComments = (req, res, next) => {
   getArticlesComments(req.params)
     .then(comments => {
-      //console.log(comments);
+      // if (!comments)
+      //   return Promise.reject({ status: 404, msg: "comments not found" });
       res.status(200).send({ comments });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.postCommentByarticleID = (req, res, next) => {
@@ -71,5 +72,5 @@ exports.postCommentByarticleID = (req, res, next) => {
       //console.log(newInsertedComment);
       res.status(201).send({ newInsertedComment });
     })
-    .catch(console.log);
+    .catch(next);
 };

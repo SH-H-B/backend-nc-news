@@ -8,6 +8,7 @@ exports.sendAlltopics = (req, res, next) => {
 };
 
 exports.postTopic = (req, res, next) => {
+  //console.log(req.body);
   addTopic(req.body)
     .then(newTopicData => {
       res.status(201).send({ newTopicData });
