@@ -14,16 +14,15 @@ exports.sendArticlesData = (req, res, next) => {
       //console.log(articles);
       res.status(200).send({ articles });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.postArticleData = (req, res, next) => {
   insertArticleData(req.body)
     .then(([newInsertedArticleData]) => {
-      ///ask this[]<---- it s because we have a single object.
       res.status(201).send({ newInsertedArticleData });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.sendArticleByID = (req, res, next) => {
@@ -33,7 +32,7 @@ exports.sendArticleByID = (req, res, next) => {
         return Promise.reject({ status: 404, msg: "Article not found" });
       else return res.status(200).send({ article });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.patchArticleVotes = (req, res, next) => {

@@ -42,6 +42,20 @@ describe("/api", () => {
           expect(res.body.newTopicData[0].slug).to.eql("shiva");
         });
     });
+    it("POST, status:404 and response with undefined column", () => {
+      const newTopicData = {
+        sss: "I wish I could have you forever",
+        slug: "shiva"
+      };
+      return request
+        .post("/api/topics")
+        .expect(400)
+        .send(newTopicData)
+        .then(res => {
+          expect(res.body.msg).to.equal("Undefined Column");
+          //expect(res.body.newTopicData[0].slug).to.eql("shiva");
+        });
+    });
   });
 
   describe("/articles", () => {
@@ -120,6 +134,15 @@ describe("/api", () => {
           expect(res.body.article).to.be.an("object");
           expect(res.body.article.title).to.eql("Sony Vaio; or, The Laptop");
           expect(res.body.article).contain.key("comment_count");
+        });
+    });
+    it("GET: status 404 and response with Article not found ", () => {
+      return request
+        .get("/api/articles/10000")
+        .expect(404)
+        .then(res => {
+          //console.log(res.body.articles);
+          expect(res.body.msg).to.equal("Article not found");
         });
     });
     it("PATCH, status:202 and response with updated single article's votes object", () => {
