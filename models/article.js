@@ -1,8 +1,12 @@
 const connection = require("../db/connection");
 
-exports.getarticlesData = ({ author, topic, sort_by, order }) => {
-  //console.log(author);
-  let query = connection
+exports.getarticlesData = ({
+  author,
+  topic,
+  sort_by = "created_at",
+  order = "desc"
+}) => {
+  const query = connection
     .select("articles.*")
     .from("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
@@ -15,30 +19,30 @@ exports.getarticlesData = ({ author, topic, sort_by, order }) => {
       "articles.votes",
       "articles.created_at",
       "articles.topic"
-    );
-  if (author !== undefined) {
-    query.where("articles.author", author);
-  }
-  if (topic !== undefined) {
-    query.where("articles.topic", topic);
-  }
+    )
+    .orderBy(sort_by, order);
+  // if (author !== undefined) {
+  //   query.where('articles.author', author);
+  // }
+  // if (topic !== undefined) {
+  //   query.where('articles.topic', topic);
+  // }
 
-  if (sort_by === undefined && order === undefined) {
-    query.orderBy("articles.created_at", "desc");
-  } else query.orderBy(sort_by, order);
+  // if (sort_by === undefined && order === undefined) {
+  //   quer('articles.created_at'
+  // } else query.orderBy(sort_by, order);
 
   return query;
 };
 
-exports.insertArticleData = newArticleData => {
-  return connection
+exports.insertArticleData = newArticleData =>
+  connection
     .insert(newArticleData)
     .into("articles")
     .returning("*");
-};
 
-exports.getArticleByID = ({ article_id }) => {
-  return connection
+exports.getArticleByID = ({ article_id }) =>
+  connection
     .select("articles.*")
     .from("articles")
     .leftJoin("comments", "articles.article_id", "comments.article_id")
@@ -53,37 +57,33 @@ exports.getArticleByID = ({ article_id }) => {
       "articles.created_at",
       "articles.topic"
     );
-};
 
 exports.updateArticleVotes = ({ article_id }, { newVote }) => {
-  //console.log(article_id);
+  // console.log(article_id);
 
   const query = connection.from("articles").where("article_id", article_id);
 
-  if (newVote > 0) query.increment("votes", newVote);
+  if (newVote > 0) query.increment("votes", 1);
   else {
-    query.decrement("votes", newVote);
+    query.increment("votes", -1);
   }
   return query.returning("*");
   articles;
 };
 
-exports.removeArticleByID = ({ article_id }) => {
-  //first delete all relations then delete from actual table ( in this case articles)
-  return connection
+exports.removeArticleByID = ({ article_id }) =>
+  connection
     .from("comments")
     .where("comments.article_id", "=", article_id)
     .del()
-    .then(() => {
-      return connection
+    .then(() =>
+      connection
         .from("articles")
         .del()
-        .where("articles.article_id", "=", article_id);
-    });
-};
-
+        .where("articles.article_id", "=", article_id)
+    );
 exports.getArticlesComments = ({ article_id, sort_by, order }) => {
-  let query = connection
+  const query = connection
     // .from("comments")
     // .select("comments.*")
     // .leftJoin("articles", "comments.article_id", "articles.article_id")
@@ -105,11 +105,9 @@ exports.getArticlesComments = ({ article_id, sort_by, order }) => {
   return query;
 };
 
-exports.insertCommentsByArticleID = ({ article_id }, newCommentData) => {
-  //console.log(newCommentData);
-  return connection
+exports.insertCommentsByArticleID = ({ article_id }, newCommentData) =>
+  connection
     .insert(newCommentData)
     .where("comments.article_id", article_id)
     .into("comments")
     .returning("*");
-};

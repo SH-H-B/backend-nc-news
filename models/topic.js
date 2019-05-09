@@ -1,16 +1,11 @@
-const connection = require("../db/connection");
+const connection = require('../db/connection');
 
-exports.getTopicsData = () => {
-  return connection
-    .select("*")
-    .from("topics")
-    .returning("*");
-};
+exports.getTopicsData = () => connection
+  .select('*')
+  .from('topics')
+  .returning('*');
 
-exports.addTopic = newTopicData => {
-  //console.log(newTopicData);
-  return connection
-    .insert(newTopicData)
-    .into("topics")
-    .returning("*");
-};
+exports.addTopic = newTopicData => connection
+  .insert(newTopicData)
+  .into('topics')
+  .returning('*');

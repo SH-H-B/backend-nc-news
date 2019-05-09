@@ -1,13 +1,19 @@
-const usersRouter = require("express").Router();
+const usersRouter = require('express').Router();
+const { handle405 } = require('../errors/errorHandler');
 const {
   sendAllusers,
   postUserData,
-  sendUserByUsername
-} = require("../controllers/user");
+  sendUserByUsername,
+} = require('../controllers/user');
+
 usersRouter
-  .route("/")
+  .route('/')
   .get(sendAllusers)
-  .post(postUserData);
-usersRouter.route("/:username").get(sendUserByUsername);
+  .post(postUserData)
+  .all(handle405);
+usersRouter
+  .route('/:username')
+  .get(sendUserByUsername)
+  .all(handle405);
 
 module.exports = usersRouter;

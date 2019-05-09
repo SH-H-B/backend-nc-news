@@ -1,30 +1,17 @@
-const connection = require("../db/connection");
+const connection = require('../db/connection');
 
-exports.getUsersData = () => {
-  return connection
-    .select("*")
-    .from("users")
-    .returning("*");
-};
+exports.getUsersData = () => connection
+  .select('*')
+  .from('users')
+  .returning('*');
 
-exports.addUserData = newUserData => {
-  return connection
-    .insert(newUserData)
-    .into("users")
-    .returning("*");
-};
+exports.addUserData = newUserData => connection
+  .insert(newUserData)
+  .into('users')
+  .returning('*');
 
-exports.getUserByUsername = ({ username }) => {
-  // console.log(
-  //   connection
-  //     .select("*")
-  //     .from("users")
-  //     .where("username", "=", username)
-  //     .returning("*")
-  // );
-  return connection
-    .select("*")
-    .from("users")
-    .where("username", "=", username)
-    .returning("*");
-};
+exports.getUserByUsername = ({ username }) => connection
+  .select('*')
+  .from('users')
+  .where('username', '=', username)
+  .returning('*');
