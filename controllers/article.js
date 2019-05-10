@@ -37,6 +37,8 @@ exports.sendArticleByID = (req, res, next) => {
 
 exports.patchArticleVotes = (req, res, next) => {
   // if (typeof newVote)
+  console.log(req.params);
+  console.log(req.body);
   updateArticleVotes(req.params, req.body)
     .then(([article]) => {
       // console.log(updatedArticle);

@@ -58,17 +58,15 @@ exports.getArticleByID = ({ article_id }) =>
       "articles.topic"
     );
 
-exports.updateArticleVotes = ({ article_id }, { newVote }) => {
+exports.updateArticleVotes = ({ article_id }, { inc_votes }) => {
   // console.log(article_id);
-
+  //console.log(inc_votes);
+  if (inc_votes === undefined) inc_votes = 0;
   const query = connection.from("articles").where("article_id", article_id);
 
-  if (newVote > 0) query.increment("votes", 1);
-  else {
-    query.increment("votes", -1);
-  }
+  query.increment("votes", inc_votes);
+
   return query.returning("*");
-  articles;
 };
 
 exports.removeArticleByID = ({ article_id }) =>

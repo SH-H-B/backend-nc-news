@@ -119,7 +119,7 @@ describe("/api", () => {
         .then(res => expect(res.body.msg).to.equal("Method Not Allowed")));
   });
 
-  describe.only("/articles", () => {
+  describe("/articles", () => {
     it("GET : responds with a 200 status", () =>
       request.get("/api/articles").expect(200));
     it("GET: status 200 and response with and array of article object", () =>
@@ -255,6 +255,20 @@ describe("/api", () => {
           // console.log(res.body);
           expect(res.body.article).to.be.an("object");
           expect(res.body.article.votes).to.eql(99);
+        });
+    });
+    it("PATCH, status:202 and response with updated single article's votes object", () => {
+      const newVote = {
+        inc_votes: 5
+      };
+      return request
+        .patch("/api/articles/1")
+        .expect(200)
+        .send(newVote)
+        .then(res => {
+          // console.log(res.body);
+          expect(res.body.article).to.be.an("object");
+          expect(res.body.article.votes).to.eql(105);
         });
     });
     it("PATCH, status:400 and response with invalid input syntax for type integer", () => {
