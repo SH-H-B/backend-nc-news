@@ -4,7 +4,9 @@ exports.handle400 = (err, req, res, next) => {
     '22P02': 'invalid input syntax for type integer',
     42703: 'Undefined Column',
   };
+  // console.log(err);
   if (codes[err.code]) res.status(400).send({ msg: codes[err.code] });
+  else if (err.status === 400) res.status(400).send({ msg: err.msg });
   else next(err);
 };
 

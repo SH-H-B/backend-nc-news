@@ -4,7 +4,10 @@ exports.up = function (knex, Promise) {
       .increments('comment_id')
       .primary()
       .notNullable();
-    commentsTable.string('author').references('users.username');
+    commentsTable
+      .string('author')
+      .references('users.username')
+      .notNullable();
     commentsTable.integer('article_id').references('articles.article_id');
     commentsTable.integer('votes').defaultTo(0);
     commentsTable.date('created_at').defaultTo(knex.fn.now());

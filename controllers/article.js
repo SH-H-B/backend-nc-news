@@ -37,18 +37,19 @@ exports.sendArticleByID = (req, res, next) => {
 };
 
 exports.patchArticleVotes = (req, res, next) => {
-  // if (typeof newVote)
-  // console.log(req.params);
-  // console.log(req.body);
-  updateArticleVotes(req.params, req.body)
-    .then(([article]) => {
-      // console.log(updatedArticle);
-      res.status(200).send({
-        article,
-      });
-    })
-    .catch(next);
+  const { inc_votes } = req.body;
+  if (typeof inc_votes !== 'number' && inc_votes) next({ status: 400, msg: 'Bad Request' });
+  else {
+    return updateArticleVotes(req.params, req.body)
+      .then(([article]) => {
+        res.status(200).send({
+          article,
+        });
+      })
+      .catch(next);
+  }
 };
+// };
 
 exports.deleteArticleByID = (req, res, next) => {
   getArticleByID(req.params)

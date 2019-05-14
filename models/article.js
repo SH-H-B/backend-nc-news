@@ -37,12 +37,9 @@ exports.getarticlesData = ({
   if (author) {
     query.where('articles.author', author);
   }
-  // if (topic !== undefined) {
-  //   query.where('articles.topic', topic);
-  // }
-
-  // if (sort_by === undefined && order === undefined)
-  //   query.where("articles.created_at").orderBy(sort_by, order);
+  if (topic) {
+    query.where('articles.topic', topic);
+  }
 
   return query;
 };
@@ -69,11 +66,8 @@ exports.getArticleByID = ({ article_id }) => connection
   );
 
 exports.updateArticleVotes = ({ article_id }, { inc_votes }) => {
-  // console.log(article_id);
-  // console.log(inc_votes);
   if (inc_votes === undefined) inc_votes = 0;
   const query = connection.from('articles').where('article_id', article_id);
-
   query.increment('votes', inc_votes);
 
   return query.returning('*');
