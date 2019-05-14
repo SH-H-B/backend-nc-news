@@ -1,5 +1,4 @@
 process.env.NODE_ENV = "test";
-
 const { expect } = require("chai");
 const app = require("../app");
 const request = require("supertest")(app);
@@ -141,6 +140,14 @@ describe("/api", () => {
           expect(res.body.articles[0].author).to.eql("rogersop");
           expect(res.body.articles[1].author).to.eql("rogersop");
         }));
+    it("GET: status 200 and response with and array of article object with specific author", () =>
+      request
+        .get("/api/articles?author=jehgfsj")
+        .expect(404)
+        .then(res => {
+          expect(res.body.msg).to.equal("Article Not Found");
+        }));
+
     it("GET: status 200 and response with and array of article object with specific topic", () =>
       request
         .get("/api/articles?topic=mitch")
@@ -158,6 +165,39 @@ describe("/api", () => {
           // console.log(res.body.articles);
           expect(res.body.articles).to.be.an("array");
           expect(res.body.articles[0].topic).to.eql("cats");
+        }));
+    it("GET status:200 takes sort_by query which alters the column by which data is sorted (DEFAULT order=desc)", () =>
+      request
+        .get("/api/articles")
+        .expect(200)
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles[0].created_at).to.equal(
+            "2018-11-15T00:00:00.000Z"
+          );
+        }));
+    it("GET status:200 takes a order query which changes the sort to ascending (DEFAULT sort_by=created_at)", () =>
+      request
+        .get("/api/articles/?order=asc")
+        .expect(200)
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles[0].created_at).to.equal(
+            "1974-11-26T00:00:00.000Z"
+          );
+        }));
+    it("GET status:200 will ignore an invalid sort_by query", () =>
+      request
+        .get("/api/articles/?sort_by=hajaja")
+        .expect(200)
+        .then(res => {
+          // console.log(res.body.articles[0]);
+          expect(res.body.articles).to.be.an("array");
+          expect(res.body.articles[0].created_at).to.equal(
+            "2018-11-15T00:00:00.000Z"
+          );
         }));
     it("GET:status404 and  response with Not Found", () =>
       request
@@ -328,8 +368,46 @@ describe("/api", () => {
         .then(res => {
           // console.log(res.body.comments);
           expect(res.body.comments).to.be.an("array");
+          expect(res.body.comments[0]).contain.keys(
+            "article_id",
+            "comment_id",
+            "votes",
+            "created_at",
+            "author",
+            "body"
+          );
+
           expect(res.body.comments[0].body).to.equal(
             "This is a bad article name"
+          );
+        }));
+    it("GET status:200 can be sorted by author (DEFAULT order=desc)", () =>
+      request
+        .get("/api/articles/6/comments/?sort_by=author")
+        .expect(200)
+        .then(res => {
+          // console.log(res.body.comments);
+          expect(res.body.comments).to.be.an("array");
+          expect(res.body.comments[0].author).to.eql("butter_bridge");
+        }));
+    it("GET status:200 can be sorted by votes (DEFAULT order=desc)", () =>
+      request
+        .get("/api/articles/6/comments/?sort_by=votes")
+        .expect(200)
+        .then(res => {
+          // console.log(res.body.comments);
+          expect(res.body.comments).to.be.an("array");
+          expect(res.body.comments[0].votes).to.equal(1);
+        }));
+    it("GET status:200 can change the sort order (DEFAULT sort_by=created_at)", () =>
+      request
+        .get("/api/articles/6/comments/?order=asc")
+        .expect(200)
+        .then(res => {
+          // console.log(res.body.comments);
+          expect(res.body.comments).to.be.an("array");
+          expect(res.body.comments[0].created_at).to.eql(
+            "2002-11-26T00:00:00.000Z"
           );
         }));
     it("GET: status 404 and response for non-existent article id", () => {
@@ -422,7 +500,6 @@ describe("/api", () => {
         .expect(404)
         .then(res => expect(res.body.msg).to.equal("Comment Does Not Exist"));
     });
-
     it("Delete: responds with 404 if passed a comment id that does not exist", () => {
       const newVote = { inc_votes: 12 };
       return request
@@ -504,5 +581,6 @@ describe("/api", () => {
         .then(res => expect(res.body.msg).to.equal("Method Not Allowed")));
   });
 });
+
 // "app-test": "mocha spec/app.spec.js",
 // - get rid of console.logs / unreachable code
