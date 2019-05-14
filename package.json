@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha spec/*.spec.js",
-    
     "lint": "eslint ./ --fix",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
@@ -15,7 +14,10 @@
     "migrate:rollback": "knex migrate:rollback",
     "seed:db": "knex seed:run",
     "dev": "nodemon listen.js",
-    "start": "node listen.js"
+    "start": "node listen.js",
+    "seed:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex seed:run",
+    "migrate:latest:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:latest",
+    "migrate:rollback:prod": "NODE_ENV=production DB_URL=$(heroku config:get DATABASE_URL) knex migrate:rollback"
   },
   "repository": {
     "type": "git",
