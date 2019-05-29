@@ -1,8 +1,8 @@
 const connection = require("../db/connection");
 
 exports.getarticlesData = ({
-  author,
-  topic,
+  author = undefined,
+  topic = undefined,
   sort_by = "created_at",
   order = "desc"
 }) => {
@@ -37,7 +37,8 @@ exports.getarticlesData = ({
   if (author) {
     query.where("articles.author", author);
   }
-  if (topic !== null) {
+  //check if whether
+  if (topic) {
     query.where("articles.topic", topic);
   }
 
