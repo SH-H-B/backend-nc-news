@@ -1,22 +1,22 @@
-const app = require("express")();
-const bodyParser = require("body-parser");
-const apiRouter = require("./routes/apiRouter");
-const cors = require("cors");
+const app = require('express')();
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const apiRouter = require('./routes/apiRouter');
 const {
   handle400,
   handle404,
   handle500,
   handle422,
-  handle405
-} = require("./errors/errorHandler");
+  handle405,
+} = require('./errors/errorHandler');
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use("/api", apiRouter);
+app.use('/api', apiRouter);
 
-app.all("/*", (req, res, next) => {
-  next({ status: 404, msg: "Page not found" });
+app.all('/*', (req, res, next) => {
+  next({ status: 404, msg: 'Page not found' });
 });
 app.use(handle400);
 app.use(handle404);
