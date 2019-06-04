@@ -111,8 +111,7 @@ exports.getArticlesComments = ({
   return query;
 };
 
-exports.insertCommentsByArticleID = (article_id, newCommentData) => connection
-  .insert(newCommentData)
+exports.insertCommentsByArticleID = ({ article_id }, { author, body }) => connection
+  .insert({ article_id, author, body })
   .into('comments')
   .returning('*');
-// .where('comments.article_id', article_id)
