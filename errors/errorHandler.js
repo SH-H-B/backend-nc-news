@@ -21,13 +21,13 @@ exports.handle404 = (err, req, res, next) => {
 };
 
 exports.handle422 = (err, req, res, next) => {
-  // console.log(err);
+  console.log(err);
   const codes = {
     23505: "Key Already Exists",
     23503: "Invalid Parameter"
   };
   if (codes[err.code]) {
-    res.status(422).send({ msg: err.msg });
+    res.status(422).send({ msg: err });
   } else next(err);
 };
 
