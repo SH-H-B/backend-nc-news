@@ -76,6 +76,7 @@ exports.sendArticlesComments = (req, res, next) => {
 };
 
 exports.postCommentByarticleID = (req, res, next) => {
+  console.log(req.params);
   getArticleByID(req.params)
     .then(([article]) => {
       if (!article) return Promise.reject({ status: 404, msg: 'Article not found' });
