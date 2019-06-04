@@ -110,7 +110,7 @@ describe('/api', () => {
       .then(res => expect(res.body.msg).to.equal('Method Not Allowed')));
   });
 
-  describe('/articles', () => {
+  describe.only('/articles', () => {
     it('GET : responds with a 200 status', () => request.get('/api/articles').expect(200));
     it('GET: status 200 and response with and array of article object', () => request
       .get('/api/articles')
@@ -443,7 +443,7 @@ describe('/api', () => {
     });
   });
 
-  describe.only('/comments/:comment_id', () => {
+  describe('/comments/:comment_id', () => {
     it('PATCH status:200 and an updated comment when given a body including a valid inc_votes (VOTE DOWN)', () => {
       const newVote = {
         inc_votes: -1,
