@@ -113,6 +113,6 @@ exports.getArticlesComments = ({
 
 exports.insertCommentsByArticleID = ({ article_id }, newCommentData) => connection
   .insert(newCommentData)
-  .where('comments.article_id', article_id)
   .into('comments')
   .returning('*');
+// .where('comments.article_id', article_id)

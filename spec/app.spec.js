@@ -16,7 +16,6 @@ describe('/api', () => {
     .get('/ap/')
     .expect(404)
     .then((res) => {
-      // console.log("ok");
       expect(res.body.msg).to.equal('Page not found');
     }));
   it('GET 200 responds with an object', () => request
@@ -111,7 +110,7 @@ describe('/api', () => {
       .then(res => expect(res.body.msg).to.equal('Method Not Allowed')));
   });
 
-  describe.only('/articles', () => {
+  describe('/articles', () => {
     it('GET : responds with a 200 status', () => request.get('/api/articles').expect(200));
     it('GET: status 200 and response with and array of article object', () => request
       .get('/api/articles')
@@ -397,6 +396,7 @@ describe('/api', () => {
         author: 'rogersop',
         body: 'I am so proud of my codes',
       };
+
       return request
         .post('/api/articles/6/comments')
         .expect(201)
@@ -443,7 +443,7 @@ describe('/api', () => {
     });
   });
 
-  describe('/comments/:comment_id', () => {
+  describe.only('/comments/:comment_id', () => {
     it('PATCH status:200 and an updated comment when given a body including a valid inc_votes (VOTE DOWN)', () => {
       const newVote = {
         inc_votes: -1,
@@ -470,7 +470,7 @@ describe('/api', () => {
     it('PATCH method returns status 400 if client tries to update vote with an incorrect data type', () => {
       const newVote = { inc_votes: 'text' };
       request
-        .patch('/api/articles/1/comments/2')
+        .patch('/api/comments/2')
         .send(newVote)
         .expect(400)
         .then((res) => {
@@ -492,8 +492,12 @@ describe('/api', () => {
           .expect(404)
           .then(res => expect(res.body.msg).to.equal('Comment Does Not Exist '));
       });
-      it('POST/PUT/GET: returns 405 if an invalid method is selected', () => request.get('/api/comments/7').expect(405));
+      it('POST/PUT/GET: returns 405 if an invalid method is selected', () => request
+        .get('/api/comments/7')
+        .expect(405)
+        .then(res => expect(res.body.msg).to.equal('Method Not Allowed')));
     });
+
     describe('/users', () => {
       it('GET: responds with a 200 status', () => request.get('/api/users').expect(200));
       it('GETS: status:200 and responds with an array of users objects', () => request
