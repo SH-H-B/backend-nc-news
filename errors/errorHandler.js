@@ -12,9 +12,7 @@ exports.handle400 = (err, req, res, next) => {
 
 exports.handle404 = (err, req, res, next) => {
   if (err.status === 404) {
-    res.status(404).send({
-      msg: err
-    });
+    res.status(404).send(err);
   } else {
     next(err);
   }
