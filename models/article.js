@@ -21,19 +21,6 @@ exports.getarticlesData = ({
       "articles.topic"
     )
     .orderBy(sort_by, order);
-  // connection.schema
-  //   .hasColumn("articles", sort_by)
-  //   .then(exists => {
-  //     if (exists) {
-  //       console.log(query);
-  //       query.orderBy(sort_by, order);
-  //     } else {
-  //       console.log("raft");
-  //       query.orderBy("created_at", "desc");
-  //     }
-  //   })
-  //   .catch(err => {});
-
   if (author) {
     query.where("articles.author", author);
   }
@@ -87,11 +74,10 @@ exports.removeArticleByID = ({ article_id }) =>
         .del()
         .where("articles.article_id", "=", article_id)
     );
-exports.getArticlesComments = ({
-  article_id,
-  sort_by = "created_at",
-  order = "desc"
-}) => {
+exports.getArticlesComments = (
+  { article_id },
+  { sort_by = "created_at", order = "desc" }
+) => {
   const query = connection
 
     .from("comments")

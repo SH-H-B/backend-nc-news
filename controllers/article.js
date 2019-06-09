@@ -72,7 +72,7 @@ exports.sendArticlesComments = (req, res, next) => {
     .then(([article]) => {
       if (!article)
         return Promise.reject({ status: 404, msg: "Article not found" });
-      return getArticlesComments(req.params);
+      return getArticlesComments(req.params, req.query);
     })
     .then(comments => {
       res.status(200).send({ comments });
