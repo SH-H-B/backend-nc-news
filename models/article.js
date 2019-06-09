@@ -93,26 +93,11 @@ exports.getArticlesComments = ({
   order = "desc"
 }) => {
   const query = connection
-    // .from("comments")
-    // .select("comments.*")
-    // .leftJoin("articles", "comments.article_id", "articles.article_id")
-    // .where("comments.article_id", article_id)
-    // .groupBy(
-    //   "comments.comment_id",
-    //   "comments.votes",
-    //   "comments.created_at",
-    //   "comments.author",
-    //   "comments.body"
-    // )
-    // .returning("*");<--- this works but in comments table we have a column article_id so we can use comments table and no need for this
+
     .from("comments")
     .select("article_id", "comment_id", "votes", "created_at", "author", "body")
     .where("comments.article_id", article_id)
     .orderBy(sort_by, order);
-
-  // if (sort_by === undefined && order === undefined) {
-  //   query.orderBy('comments.created_at', 'desc');
-  // } else query
   return query;
 };
 
