@@ -1,5 +1,7 @@
 // to run this file --> package.json---> npm run migrate:latest
-// /* Create table with knex.... It is essential that the up function returns a promise so the return statement in this function is important! */
+/* Create table with knex....
+It is essential that the up function returns
+a promise so the return statement in this function is important! */
 
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('topics', (topicTable) => {

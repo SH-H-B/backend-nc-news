@@ -5,14 +5,15 @@ const {
   updateArticleVotes,
   removeArticleByID,
   getArticlesComments,
-  insertCommentsByArticleID
-} = require("../models/article");
+  insertCommentsByArticleID,
+} = require('../models/article');
 
 exports.sendArticlesData = (req, res, next) => {
   getarticlesData(req.query)
-    .then(articles => {
-      if (!articles || articles.length === 0)
-        return Promise.reject({ status: 404, msg: "Article Not Found" });
+    .then((articles) => {
+      if (!articles || articles.length === 0) {
+        return Promise.reject({ status: 404, msg: 'Article Not Found' });
+      }
 
       return res.status(200).send({ articles });
     })
@@ -30,9 +31,9 @@ exports.postArticleData = (req, res, next) => {
 exports.sendArticleByID = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
-      // console.log(article);
-      if (!article)
-        return Promise.reject({ status: 404, msg: "Article not found" });
+      if (!article) {
+        return Promise.reject({ status: 404, msg: 'Article not found' });
+      }
       return res.status(200).send({ article });
     })
     .catch(next);
@@ -40,25 +41,24 @@ exports.sendArticleByID = (req, res, next) => {
 
 exports.patchArticleVotes = (req, res, next) => {
   const { inc_votes } = req.body;
-  if (typeof inc_votes !== "number" && inc_votes)
-    next({ status: 400, msg: "Bad Request" });
-  else {
-    return updateArticleVotes(req.params, req.body)
-      .then(([article]) => {
-        res.status(200).send({
-          article
-        });
-      })
-      .catch(next);
+  if (typeof inc_votes !== 'number' && inc_votes) {
+    return next({ status: 400, msg: 'Bad Request' });
   }
+  return updateArticleVotes(req.params, req.body)
+    .then(([article]) => {
+      res.status(200).send({
+        article,
+      });
+    })
+    .catch(next);
 };
-// };
 
 exports.deleteArticleByID = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
-      if (!article)
-        return Promise.reject({ status: 404, msg: "Article not found" });
+      if (!article) {
+        return Promise.reject({ status: 404, msg: 'Article not found' });
+      }
       return removeArticleByID(req.params);
     })
     .then(() => {
@@ -70,11 +70,12 @@ exports.deleteArticleByID = (req, res, next) => {
 exports.sendArticlesComments = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
-      if (!article)
-        return Promise.reject({ status: 404, msg: "Article not found" });
+      if (!article) {
+        return Promise.reject({ status: 404, msg: 'Article not found' });
+      }
       return getArticlesComments(req.params, req.query);
     })
-    .then(comments => {
+    .then((comments) => {
       res.status(200).send({ comments });
     })
     .catch(next);
@@ -85,7 +86,7 @@ exports.postCommentByarticleID = (req, res, next) => {
   getArticleByID(req.params)
     .then(([article]) => {
       if (!article) {
-        return Promise.reject({ status: 404, msg: "Article not found" });
+        return Promise.reject({ status: 404, msg: 'Article not found' });
       }
       return insertCommentsByArticleID(req.params, req.body);
     })
