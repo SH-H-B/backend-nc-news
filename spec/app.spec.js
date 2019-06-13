@@ -27,7 +27,7 @@ describe('/api', () => {
       expect(res.body).contain.key('/api');
     }));
 
-  describe.only('/topics', () => {
+  describe('/topics', () => {
     it('GET : responds with a status 200', () => request.get('/api/topics').expect(200));
     it('GETS: status:200 and responds with an array of topics objects', () => request
       .get('/api/topics')
@@ -114,7 +114,7 @@ describe('/api', () => {
       .then(res => expect(res.body.msg).to.equal('Method Not Allowed')));
   });
 
-  describe('/articles', () => {
+  describe.only('/articles', () => {
     it('GET : responds with a 200 status', () => request.get('/api/articles').expect(200));
     it('GET: status 200 and response with and array of article object', () => request
       .get('/api/articles')
@@ -163,7 +163,7 @@ describe('/api', () => {
         // console.log(res.body);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].created_at).to.equal(
-          '2018-11-15T00:00:00.000Z',
+          '2018-11-15T12:21:54.171Z',
         );
       }));
     it('GET status:200 takes a order query which changes the sort to ascending (DEFAULT sort_by=created_at)', () => request
@@ -173,20 +173,10 @@ describe('/api', () => {
         // console.log(res.body);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].created_at).to.equal(
-          '1974-11-26T00:00:00.000Z',
+          '1974-11-26T12:21:54.171Z',
         );
       }));
-    // it("GET status:200 will ignore an invalid sort_by query", () =>
-    //   request
-    //     .get("/api/articles/?sort_by=hajaja")
-    //     .expect(200)
-    //     .then(res => {
 
-    //       expect(res.body.articles).to.be.an("array");
-    //       expect(res.body.articles[0].created_at).to.equal(
-    //         "2018-11-15T00:00:00.000Z"
-    //       );
-    //     }));
     it('GET:status404 and  response with Not Found', () => request
       .get('/api/65')
       .expect(404)
@@ -385,7 +375,7 @@ describe('/api', () => {
         // console.log(res.body.comments);
         expect(res.body.comments).to.be.an('array');
         expect(res.body.comments[0].created_at).to.eql(
-          '2002-11-26T00:00:00.000Z',
+          '2002-11-26T12:36:03.389Z',
         );
       }));
     it('GET: status 404 and response for non-existent article id', () => request
@@ -428,8 +418,7 @@ describe('/api', () => {
         .expect(400)
         .send(newComment)
         .then((res) => {
-          expect(res.body.msg).to.equal('violates not null violation');
-          ('I am so proud of my codes');
+          expect(res.body.msg).to.equal('Violates not null violation');
         });
     });
     it('POST, status:400 and response with violates not null violation', () => {
@@ -441,8 +430,7 @@ describe('/api', () => {
         .expect(400)
         .send(newComment)
         .then((res) => {
-          expect(res.body.msg).to.equal('violates not null violation');
-          ('I am so proud of my codes');
+          expect(res.body.msg).to.equal('Violates not null violation');
         });
     });
   });

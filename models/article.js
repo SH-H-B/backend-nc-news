@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const connection = require('../db/connection');
 
 exports.getarticlesData = ({
@@ -33,25 +34,25 @@ exports.getarticlesData = ({
 };
 
 exports.insertArticleData = newArticleData => connection
-  .insert(newArticleData)
-  .into('articles')
-  .returning('*');
+    .insert(newArticleData)
+    .into('articles')
+    .returning('*');
 
 exports.getArticleByID = ({ article_id }) => connection
-  .select('articles.*')
-  .from('articles')
-  .leftJoin('comments', 'articles.article_id', 'comments.article_id')
-  .count('comments.article_id as comment_count')
-  .where('articles.article_id', article_id)
-  .groupBy(
-    'articles.author',
-    'articles.body',
-    'articles.title',
-    'articles.article_id',
-    'articles.votes',
-    'articles.created_at',
-    'articles.topic',
-  );
+    .select('articles.*')
+    .from('articles')
+    .leftJoin('comments', 'articles.article_id', 'comments.article_id')
+    .count('comments.article_id as comment_count')
+    .where('articles.article_id', article_id)
+    .groupBy(
+      'articles.author',
+      'articles.body',
+      'articles.title',
+      'articles.article_id',
+      'articles.votes',
+      'articles.created_at',
+      'articles.topic',
+    );
 
 exports.updateArticleVotes = ({ article_id }, { inc_votes }) => {
   if (inc_votes === undefined) inc_votes = 0;
@@ -62,13 +63,13 @@ exports.updateArticleVotes = ({ article_id }, { inc_votes }) => {
 };
 
 exports.removeArticleByID = ({ article_id }) => connection
-  .from('comments')
-  .where('comments.article_id', '=', article_id)
-  .del()
-  .then(() => connection
-    .from('articles')
+    .from('comments')
+    .where('comments.article_id', '=', article_id)
     .del()
-    .where('articles.article_id', '=', article_id));
+    .then(() => connection
+        .from('articles')
+        .del()
+        .where('articles.article_id', '=', article_id));
 exports.getArticlesComments = (
   { article_id },
   { sort_by = 'created_at', order = 'desc' },
@@ -83,6 +84,6 @@ exports.getArticlesComments = (
 };
 
 exports.insertCommentsByArticleID = ({ article_id }, { author, body }) => connection
-  .insert({ article_id, author, body })
-  .into('comments')
-  .returning('*');
+    .insert({ article_id, author, body })
+    .into('comments')
+    .returning('*');
