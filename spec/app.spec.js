@@ -114,7 +114,7 @@ describe('/api', () => {
       .then(res => expect(res.body.msg).to.equal('Method Not Allowed')));
   });
 
-  describe.only('/articles', () => {
+  describe('/articles', () => {
     it('GET : responds with a 200 status', () => request.get('/api/articles').expect(200));
     it('GET: status 200 and response with and array of article object', () => request
       .get('/api/articles')
