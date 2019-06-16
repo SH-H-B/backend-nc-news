@@ -12,7 +12,7 @@ exports.handle400 = (err, req, res, next) => {
 
 exports.handle404 = (err, req, res, next) => {
   if (err.status === 404) {
-    res.status(404).send(err);
+    res.status(404).send({ msg: err.msg });
   } else {
     next(err);
   }
@@ -25,7 +25,7 @@ exports.handle422 = (err, req, res, next) => {
     23503: 'Invalid Parameter',
   };
   if (codes[err.code]) {
-    res.status(422).send({ msg: err });
+    res.status(422).send({ msg: codes[err.code] });
   } else next(err);
 };
 

@@ -77,10 +77,7 @@ describe('/api', () => {
         .send(badTopic)
         .expect(422)
         .then((res) => {
-          // console.log(res.body);
-          expect(res.body.msg.detail).to.equal(
-            'Key (slug)=(cats) already exists.',
-          );
+          expect(res.body.msg).to.equal('Key Already Exists');
         });
     });
     it('POST: status 400 with violates not null violation', () => {
