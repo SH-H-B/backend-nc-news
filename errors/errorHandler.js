@@ -4,7 +4,7 @@ exports.handle400 = (err, req, res, next) => {
     '22P02': 'Invalid input syntax for type integer',
     42703: 'Undefined Column',
   };
-  // console.log(err);
+
   if (codes[err.code]) res.status(400).send({ msg: codes[err.code] });
   if (err.status === 400) res.status(400).send({ msg: err.msg });
   else next(err);
@@ -19,7 +19,6 @@ exports.handle404 = (err, req, res, next) => {
 };
 
 exports.handle422 = (err, req, res, next) => {
-  // console.log(err);
   const codes = {
     23505: 'Key Already Exists',
     23503: 'Invalid Parameter',

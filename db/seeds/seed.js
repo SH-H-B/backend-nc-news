@@ -18,14 +18,13 @@ exports.seed = function (knex, Promise) {
         created_at: new Date(eachArticle.created_at).toISOString(),
         votes: eachArticle.votes,
       }));
-      // console.log(formatedArticlesData);
+
       return knex
         .insert(formatedArticlesData)
         .into('articles')
         .returning('*');
     })
     .then((insertedArticlesData) => {
-      // console.log(insertedArticlesData[0]);
       const lookUpObject = createArticLookup(insertedArticlesData);
       const commentsWithArticlesID = commentData.map(eachComment => ({
         body: eachComment.body,

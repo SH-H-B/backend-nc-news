@@ -22,7 +22,6 @@ describe('/api', () => {
     .get('/api')
     .expect(200)
     .then((res) => {
-      // console.log(res.body);
       expect(res.body).to.be.an('object');
       expect(res.body).contain.key('/api');
     }));
@@ -33,8 +32,6 @@ describe('/api', () => {
       .get('/api/topics')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.topics);
-
         expect(res.body.topics).to.be.an('array');
         expect(res.body.topics[0]).contain.keys('slug', 'description');
       }));
@@ -48,7 +45,6 @@ describe('/api', () => {
         .expect(201)
         .send(topic)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.topic[0]).to.be.an('object');
           expect(res.body.topic[0].slug).to.eql('shiva');
         });
@@ -64,7 +60,6 @@ describe('/api', () => {
         .send(newTopic)
         .then((res) => {
           expect(res.body.msg).to.equal('Undefined Column');
-          // expect(res.body.newTopicData[0].slug).to.eql("shiva");
         });
     });
     it('Post status 422 with Key alredy exist', () => {
@@ -89,7 +84,6 @@ describe('/api', () => {
         .send(badTopic)
         .expect(400)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.msg).to.equal('Violates not null violation');
         });
     });
@@ -117,7 +111,6 @@ describe('/api', () => {
       .get('/api/articles')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.articles[0].count);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].comment_count).to.eql('13');
         expect(res.body.articles[0]).contain.key('comment_count');
@@ -148,7 +141,6 @@ describe('/api', () => {
       .get('/api/articles?sort_by=topic&order=asc')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.articles);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].topic).to.eql('cats');
       }));
@@ -157,7 +149,6 @@ describe('/api', () => {
       .get('/api/articles')
       .expect(200)
       .then((res) => {
-        // console.log(res.body);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].created_at).to.equal(
           '2018-11-15T12:21:54.171Z',
@@ -167,7 +158,6 @@ describe('/api', () => {
       .get('/api/articles/?order=asc')
       .expect(200)
       .then((res) => {
-        // console.log(res.body);
         expect(res.body.articles).to.be.an('array');
         expect(res.body.articles[0].created_at).to.equal(
           '1974-11-26T12:21:54.171Z',
@@ -193,7 +183,6 @@ describe('/api', () => {
         .expect(201)
         .send(newArticleData)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.article).to.be.an('object');
           expect(res.body.article).contain.keys(
             'article_id',
@@ -233,7 +222,6 @@ describe('/api', () => {
       .get('/api/articles/2')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.articles);
         expect(res.body.article).to.be.an('object');
         expect(res.body.article.title).to.eql('Sony Vaio; or, The Laptop');
         expect(res.body.article).contain.key('comment_count');
@@ -242,14 +230,12 @@ describe('/api', () => {
       .get('/api/articles/10000')
       .expect(404)
       .then((res) => {
-        // console.log(res.body.articles);
         expect(res.body.msg).to.equal('Article not found');
       }));
     it('GET: status 400 and response with invalid input syntax for type integer ', () => request
       .get('/api/articles/abc')
       .expect(400)
       .then((res) => {
-        // console.log(res.body.articles);
         expect(res.body.msg).to.equal(
           'Invalid input syntax for type integer',
         );
@@ -263,7 +249,6 @@ describe('/api', () => {
         .expect(200)
         .send(newVote)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.article).to.be.an('object');
           expect(res.body.article.votes).to.eql(99);
         });
@@ -277,7 +262,6 @@ describe('/api', () => {
         .expect(200)
         .send(newVote)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.article).to.be.an('object');
           expect(res.body.article.votes).to.eql(105);
         });
@@ -334,7 +318,6 @@ describe('/api', () => {
       .get('/api/articles/6/comments')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.comments);
         expect(res.body.comments).to.be.an('array');
         expect(res.body.comments[0]).contain.keys(
           'article_id',
@@ -353,7 +336,6 @@ describe('/api', () => {
       .get('/api/articles/6/comments/?sort_by=author')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.comments);
         expect(res.body.comments).to.be.an('array');
         expect(res.body.comments[0].author).to.eql('butter_bridge');
       }));
@@ -361,7 +343,6 @@ describe('/api', () => {
       .get('/api/articles/6/comments/?sort_by=votes')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.comments);
         expect(res.body.comments).to.be.an('array');
         expect(res.body.comments[0].votes).to.equal(1);
       }));
@@ -369,7 +350,6 @@ describe('/api', () => {
       .get('/api/articles/6/comments/?order=asc')
       .expect(200)
       .then((res) => {
-        // console.log(res.body.comments);
         expect(res.body.comments).to.be.an('array');
         expect(res.body.comments[0].created_at).to.eql(
           '2002-11-26T12:36:03.389Z',
@@ -379,7 +359,6 @@ describe('/api', () => {
       .get('/api/articles/1000/comments')
       .expect(404)
       .then((res) => {
-        // console.log(res.body.msg);
         expect(res.body.msg).to.equal('Article not found');
       }));
     it('POST, status:201 and response with single posted comment object', () => {
@@ -393,7 +372,6 @@ describe('/api', () => {
         .expect(201)
         .send(newComment)
         .then((res) => {
-          // console.log(res.body);
           expect(res.body.comment).to.be.an('object');
           expect(res.body.comment.body).to.equal('I am so proud of my codes');
           expect(res.body.comment).contain.keys('author', 'body');
@@ -403,7 +381,6 @@ describe('/api', () => {
       .post('/api/articles/1000/comments')
       .expect(404)
       .then((res) => {
-        // console.log(res.body.msg);
         expect(res.body.msg).to.equal('Article not found');
       }));
     it('POST, status:400 and response with violates not null violation', () => {
@@ -512,7 +489,6 @@ describe('/api', () => {
           .expect(201)
           .send(newUser)
           .then((res) => {
-            // console.log(res.body);
             expect(res.body.user).to.be.an('object');
             expect(res.body.user.name).to.eql('shiva');
           });
@@ -552,5 +528,3 @@ describe('/api', () => {
     });
   });
 });
-// "app-test": "mocha spec/app.spec.js",
-// - get rid of console.logs / unreachable code
